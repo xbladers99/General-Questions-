@@ -1,0 +1,48 @@
+// C program to find the element 
+// that occur only once 
+#include <stdio.h> 
+#include<bits/stdc++.h>
+//#define INT_SIZE 32 
+
+int getSingle(int arr[], int n,int size) 
+{ 
+	int result = 0;
+	int i,j,x=1;
+	for(i=0;i<size;i++)
+	{
+	    int sum = 0;
+	    //x = x*3;
+	    //x = 1<<i ;
+	    for(j=0;j<n;j++)
+	    {
+	        int y = arr[j]%3;
+	        arr[j] = arr[j]/3;
+	        if(y!=0)
+	            sum += y;
+	    }
+	    result += pow(3,i)*(sum%3);
+	    
+	}
+	return result;
+} 
+
+
+int main() 
+{ 
+	//int arr[] = {12, 1, 12, 3, 12, 1, 1, 2, 3, 2, 2, 3, 7};
+	int arr[] = {4,4,4,2,2,2,7,7,7,5,5,5,11,11,11,6};
+	int n = sizeof(arr) / sizeof(arr[0]); 
+	int max = arr[0];
+	for(int i=1;i<n;i++)
+	    if(max<arr[i])
+	        max = arr[i];
+	int c = 0;
+	while(max!=0)
+	{
+	    max = max/3;
+	    c++;
+	}
+	printf("The element with single occurrence is %d ", 
+			getSingle(arr, n,c)); 
+	return 0; 
+} 
