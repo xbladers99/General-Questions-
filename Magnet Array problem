@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+double f(double x,double arr[],int n)
+{
+    int i;
+    double ans = 0;
+    for(i=0;i<n;i++)
+    {
+        //cout<<x-arr[i]<<" ";
+        ans += (1.0/(x - arr[i]));
+    }
+    // cout<<endl;
+    // cout<<ans<<endl;
+    return ans;
+}
+double find(int i,double arr[],int n)
+{
+    double a = arr[i];
+    double b = arr[i+1];
+    
+    double precision = 0.000001;
+    while(abs(a - b) > precision)
+    {
+        double m = (a+b)/2;
+        double x = f(m,arr,n);
+        //cout<<m<<" "<<x<<endl;
+        if(x < 0)
+        {
+            b = m;
+        }
+        else if(x > 0)
+        {
+            a = m;
+        }
+        else
+        {
+            return m;
+        }
+    }
+    return a;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        double arr[n];
+        for(int i=0;i<n;i++)
+            cin>>arr[i];
+            
+            
+        for(int i=0;i<n-1;i++)
+        {
+            float var = find(i,arr,n);
+            char str[40];  
+            sprintf(str, "%.2f", var); 
+            sscanf(str, "%f", &var);  
+            cout<<fixed<<setprecision(2)<<var<<" ";
+            //cout<<var<<" ";
+        }
+            
+        cout<<endl;
+    }
+	return 0;
+}
