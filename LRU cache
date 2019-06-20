@@ -1,0 +1,171 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct node
+{
+    int data,key;
+    node* next;
+    node* prev;
+};
+
+class LRUCache
+{
+	private:
+		unordered_map<int,node*> map;
+		node* head ;
+	    node* last ;
+	    int size;
+	    int current_size;
+	    
+	public:
+		LRUCache(int N);
+		
+		int get(int );
+		void set(int, int);
+};
+
+
+LRUCache::LRUCache(int N)
+{
+    head = NULL;
+    last = NULL;
+    //unordered_map<int,node*> map;
+    size = N;
+    current_size = 0;
+}
+/*Sets the key x with value y in the LRU cache */
+void LRUCache::set(int x, int y) 
+{
+    if(map.find(x) == map.end())
+    {
+        node* temp = new node;
+        temp->data = y;
+        temp->key = x;
+        temp->prev = temp->next = NULL;
+        map[x] = temp;
+        if(head == NULL)
+        {
+            head = temp;
+            last = temp;
+            head->prev = head->next = NULL;
+            //map[x] = head;
+            current_size = 1;
+            return;
+        }
+        
+        if(current_size == size)
+        {
+            node* ptr = last;
+            last = last->prev;
+            last->next = NULL;
+            int key = ptr->key;
+            map.erase(key);
+            delete(ptr);
+            
+            temp->next = head;
+            head->prev = temp;
+            head = temp;
+            return;
+        }
+        else
+        {
+            // node* temp = new node;
+            // temp->data = data;
+            temp->next = head;
+            head->prev = temp;
+            head = temp;
+            current_size++;
+            return;
+        }
+    }
+    else
+    {
+        node* temp = map[x];
+        if(temp->next == NULL)
+        {
+            temp->data = y;
+            last = temp->prev;
+            last->next = NULL;
+            temp->next = head;
+            head->prev = temp;
+            head = temp;
+            head->prev = NULL;
+            return;
+        }
+        else
+        {
+            node *p1,*p2;
+            p1 = temp->prev;
+            p2 = temp->next;
+            p1->next = p2;
+            p2->prev = p1;
+            
+            temp->next = head;
+            head->prev = temp;
+            head = temp;
+            return;
+        }
+    }
+}
+/*Returns the value of the key x if 
+present else returns -1 */
+int LRUCache::get(int x)
+{
+    if(map.find(x) == map.end())
+        return -1;
+    
+    node* temp = map[x];
+    if(temp->next == NULL)
+    {
+        last = temp->prev;
+        last->next = NULL;
+        temp->next = head;
+        head->prev = temp;
+        head = temp;
+        return head->data;
+    }
+    else
+    {
+        node *p1,*p2;
+        p1 = temp->prev;
+        p2 = temp->next;
+        p1->next = p2;
+        p2->prev = p1;
+        
+        temp->next = head;
+        head->prev = temp;
+        head = temp;
+        return head->data;
+    }
+}
+
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+    int n;
+    cin>>n;
+    LRUCache *l  = new LRUCache(n);
+    int q;
+    cin>>q;
+    for(int i=0;i<q;i++)
+    {
+        string a;
+        cin>>a;
+        if(a=="SET")
+        {
+            int aa,bb;
+            cin>>aa>>bb;
+            l->set(aa,bb);
+        }else if(a=="GET")
+        {
+            int aa;
+            cin>>aa;
+            cout<<l->get(aa)<<" ";
+        }
+    }
+    cout<<endl;
+    }
+}
