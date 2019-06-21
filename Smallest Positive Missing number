@@ -1,0 +1,26 @@
+int missingNumber(int arr[], int n) { 
+    int i;
+    for(i=0;i<n;i++)
+    {
+        if(arr[i] <= 0 || arr[i] > n)
+            continue;
+        
+        
+        int val = arr[i];
+        while(arr[val-1] != -1)
+        {
+            int nextval = arr[val - 1];
+            arr[val - 1] = -1;
+            val = nextval;
+            if(val <=0 || val > n)
+                break;
+        }
+    }
+    
+    for(i=0;i<n;i++)
+    {
+        if(arr[i]!= -1)
+            return i+1;
+    }
+    return n+1;
+} 
