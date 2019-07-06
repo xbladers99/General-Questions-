@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n,i,j;
+        cin>>n;
+        int arr[n];
+        for(i=0;i<n;i++)
+            cin>>arr[i];
+        
+        vector<pair<int,int>> v;
+        i = 0;  j = 1;
+        while(i<n && j<n)
+        {
+            //local minima
+            while(i < n-1 && arr[i+1] <= arr[i])
+                i++;
+            
+            if(i == n-1)
+                break;
+                
+            int buy = i;
+            i++;
+            
+            //local maxima
+            while(i < n && arr[i] >= arr[i-1])
+                i++;
+                
+            int sell = i - 1;
+            v.push_back({buy, sell});
+        }
+        
+        if(v.size() == 0)
+            cout<<"No Profit";
+        else
+        {
+            for(int k=0;k<v.size();k++)
+            {
+                i = v[k].first; j = v[k].second;
+                cout<<"("<<i<<" "<<j<<") ";
+            }
+        }
+        cout<<endl;
+    }
+	return 0;
+}
