@@ -24,6 +24,25 @@ void find_span(int arr[],int n)
         cout<<span[i]<<" ";
     cout<<endl;
 }
+O(1) space
+void find_span2(int arr[],int n)
+{
+    int i, span[n];
+    span[0] = 1;
+    
+    for(i=1;i<n;i++)
+    {
+        int j = 1;
+        while(i - j >=0 && arr[i] >= arr[i - j])
+        {
+            j = j + span[i - j];
+        }
+        span[i] = j;
+    }
+    for(int i=0;i<n;i++)
+        cout<<span[i]<<" ";
+    cout<<endl;
+}
 int main()
 {
     int t;
